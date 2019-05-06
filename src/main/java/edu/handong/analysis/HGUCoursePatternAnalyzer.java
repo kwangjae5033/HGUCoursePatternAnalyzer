@@ -58,20 +58,20 @@ public class HGUCoursePatternAnalyzer {
 	 */
 	private Student[] initiateStudentArrayFromLines(String[] lines) {
 		// TODO: implement this method
+		//extract students' names from the string array "lines"
 		String[] stringOfNames = new String[lines.length];
 		int i=0;
 		for(String name: lines)
 			stringOfNames[i++]= name.split(",")[1].trim();
-		
+		//instantiate a Student class array 
+		//to transfer students' name from String to Student
 		Student[] studentNameWithDuplicate = new Student[lines.length];
-		//here i need to use studentExist 
 		i=0;
 		for(String name: stringOfNames)
 			studentNameWithDuplicate[i++] = new Student(name); 
-		
+		//delete duplicates
 		for(Student student: studentNameWithDuplicate) {
 			if(studentExist(studentNameWithDuplicate, student)) {
-				//delete the duplicates
 				student.setName("");
 			}
 		}
@@ -79,7 +79,8 @@ public class HGUCoursePatternAnalyzer {
 		int count=0;
 		for(Student student: studentNameWithDuplicate) 
 			if(!(student.getName().equals(""))) count++;
-		
+		//instantiate new Stduent class array to store student names
+		//without duplicates 
 		Student[] studentNameNoDuplicate = new Student[count];
 		int k=0;
 		int clock=0; 
@@ -118,20 +119,19 @@ public class HGUCoursePatternAnalyzer {
 	 */
 	private Course[] initiateCourseArrayFromLines(String[] lines) {
 		// TODO: implement this method
+		//extract course names from string array "lines" 
 		String[] stringOfNames = new String[lines.length];
 		int i=0;
 		for(String name: lines)
 			stringOfNames[i++]= name.split(",")[2].trim();
-		
+		//transfer course names from String to Student 
 		Course[] courseNameWithDuplicate = new Course[lines.length];
-		//here i need to use studentExist 
 		i=0;
 		for(String name: stringOfNames)
 			courseNameWithDuplicate[i++] = new Course(name); 
-		
+		//delete the duplicates
 		for(Course course: courseNameWithDuplicate) {
 			if(courseExist(courseNameWithDuplicate, course)) {
-				//delete the duplicates
 				course.setCourseName("");
 			}
 		}
@@ -139,7 +139,8 @@ public class HGUCoursePatternAnalyzer {
 		int count=0;
 		for(Course course: courseNameWithDuplicate) 
 			if(!(course.getCourseName().equals(""))) count++;
-		
+		//instantiate another Course array and fill in course names
+		//without duplicates 
 		Course[] courseNameNoDuplicate = new Course[count];
 		int k=0;
 		int clock=0; 
