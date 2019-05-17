@@ -1,6 +1,7 @@
 package edu.handong.analysis;
 
 import edu.handong.analysis.datamodel.*;
+import java.util.ArrayList;
 
 public class HGUCoursePatternAnalyzer {
 	
@@ -20,8 +21,8 @@ public class HGUCoursePatternAnalyzer {
 
 	private int numOfStudents;
 	private int numOfCourses;
-	private Student[] students;
-	private Course[] courses;
+	private ArrayList<Student> students;
+	private ArrayList<Course> courses;
 	
 	/**
 	 * This method runs our analysis logic to get the list of student and course names from lines.
@@ -56,59 +57,34 @@ public class HGUCoursePatternAnalyzer {
 	 * @param lines
 	 * @return
 	 */
-	private Student[] initiateStudentArrayFromLines(String[] lines) {
+	private ArrayList<Student> initiateStudentArrayFromLines(String[] lines) {
 		// TODO: implement this method
-		//extract students' names from the string array "lines"
-		String[] stringOfNames = new String[lines.length];
-		int i=0;
-		for(String name: lines)
-			stringOfNames[i++]= name.split(",")[1].trim();
-		//instantiate a Student class array 
-		//to transfer students' name from String to Student
-		Student[] studentNameWithDuplicate = new Student[lines.length];
-		i=0;
-		for(String name: stringOfNames)
-			studentNameWithDuplicate[i++] = new Student(name); 
-		//delete duplicates
-		for(Student student: studentNameWithDuplicate) {
-			if(studentExist(studentNameWithDuplicate, student)) {
-				student.setName("");
-			}
-		}
-		//get the number of students without duplicates
-		int count=0;
-		for(Student student: studentNameWithDuplicate) 
-			if(!(student.getName().equals(""))) count++;
-		//instantiate new Stduent class array to store student names
-		//without duplicates 
-		Student[] studentNameNoDuplicate = new Student[count];
-		int k=0;
-		int clock=0; 
-		for(int j=0; j<count; j++) 
-			for(k=clock; k<lines.length; k++) {
-				clock++;
-				if(!(studentNameWithDuplicate[k].getName().equals(""))){
-					studentNameNoDuplicate[j] = new Student(studentNameWithDuplicate[k].getName());
-					break;
-				}
-			}	
+        ArrayList<Student> students = new ArrayList<Student>();
 		
-		return studentNameNoDuplicate; 
+		for(String line:lines) {
+			String studentName = line.split(",")[1].trim();
+			Student newStudent = new Student(studentName);
+			if(!studentExist(students,newStudent))
+				students.add(newStudent);
+		}
+		
+		return students;
+
 	}
 
 	/**
 	 * This method check if there is the same name of the second argument in the array, students
-	 * @param students
+	 * @param students2
 	 * @param student
 	 * @return boolean
 	 */
-	private boolean studentExist(Student[] students, Student student) {
+	private boolean studentExist(ArrayList<Student> students, Student student) {
 		// TODO: implement this method
-		int numberOfDuplicate = 0; 
-		for (int i=0; i<students.length; i++)
-			if (student.getName().equals(students[i].getName())) 
-				numberOfDuplicate++;
-		if (numberOfDuplicate > 1) return true; 
+		for(Student aStudent:students) {
+			if(aStudent != null && aStudent.getName().equals(student.getName()))
+				return true;
+		}
+
 		return false;
 	}
 	
@@ -117,59 +93,35 @@ public class HGUCoursePatternAnalyzer {
 	 * @param lines
 	 * @return
 	 */
-	private Course[] initiateCourseArrayFromLines(String[] lines) {
+	private ArrayList<Course> initiateCourseArrayFromLines(String[] lines) {
 		// TODO: implement this method
-		//extract course names from string array "lines" 
-		String[] stringOfNames = new String[lines.length];
-		int i=0;
-		for(String name: lines)
-			stringOfNames[i++]= name.split(",")[2].trim();
-		//transfer course names from String to Student 
-		Course[] courseNameWithDuplicate = new Course[lines.length];
-		i=0;
-		for(String name: stringOfNames)
-			courseNameWithDuplicate[i++] = new Course(name); 
-		//delete the duplicates
-		for(Course course: courseNameWithDuplicate) {
-			if(courseExist(courseNameWithDuplicate, course)) {
-				course.setCourseName("");
-			}
-		}
-		//get the number of students without duplicates
-		int count=0;
-		for(Course course: courseNameWithDuplicate) 
-			if(!(course.getCourseName().equals(""))) count++;
-		//instantiate another Course array and fill in course names
-		//without duplicates 
-		Course[] courseNameNoDuplicate = new Course[count];
-		int k=0;
-		int clock=0; 
-		for(int j=0; j<count; j++) 
-			for(k=clock; k<lines.length; k++) {
-				clock++;
-				if(!(courseNameWithDuplicate[k].getCourseName().equals(""))){
-					courseNameNoDuplicate[j] = new Course(courseNameWithDuplicate[k].getCourseName());
-					break;
-				}
-			}	
+		ArrayList<Course> courses = new ArrayList<Course>();
 		
-		return courseNameNoDuplicate; 
+		for(String line:lines) {
+			String courseName = line.split(",")[2].trim();
+			Course newCourse = new Course(courseName);
+			if(!courseExist(courses,newCourse))
+				courses.add(newCourse);
+		}
+		
+		return courses;
 	}
 
 	/**
 	 * This method check if there is the same name of the second argument in the array, courses.
-	 * @param courses
+	 * @param courses2
 	 * @param course
 	 * @return boolean
 	 */
-	private boolean courseExist(Course[] courses, Course course) {
+	private boolean courseExist(ArrayList<Course> courses, Course course) {
 		
 		// TODO: implement this method
-		int numberOfDuplicate = 0; 
-		for (int i=0; i<courses.length; i++)
-			if (course.getCourseName().equals(courses[i].getCourseName())) 
-				numberOfDuplicate++;
-		if (numberOfDuplicate > 1) return true; 
+		
+		for(Course aCourse:courses) {
+			if(aCourse != null && aCourse.getCourseName().equals(course.getCourseName()))
+				return true;
+		}
+
 		return false;
 	}
 
